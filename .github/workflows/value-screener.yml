@@ -3,24 +3,24 @@ name: Value Screener Weekly Alert
 on:
   schedule:
     - cron: '0 0 * * 6'  # 토요일 00:00 UTC (KST 9:00)
-  workflow_dispatch:  # 수동 실행 가능
+  workflow_dispatch:
 
 jobs:
   screen:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-    - name: Install dependencies
-      run: |
-        pip install simfin finnhub-python yfinance pandas python-telegram-bot requests
-    - name: Run screener
-      env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
-        SIMFIN_API_KEY: ${{ secrets.SIMFIN_API_KEY }}
-      run: python value_screener.py
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install simfin finnhub-python yfinance pandas python-telegram-bot
+      - name: Run screener
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          SIMFIN_API_KEY: ${{ secrets.SIMFIN_API_KEY }}
+        run: python value_screener.py
